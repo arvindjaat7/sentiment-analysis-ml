@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sentiment Analysis Review Model by RCC</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <h2>SentimentIQ</h2>
+        <p>AI-Powered Review Analyzer</p>
+    </header>
+
+    <main class="container">
+
+        <h1>Sentiment Analysis</h1>
+
+        <p class="subtitle">
+            Discover the sentiment behind any movie review.
+        </p>
+
+        <div class="analyzer">
+
+            <label for="review">Enter Your Review</label>
+
+            <textarea
+                id="review"
+                placeholder="Type your review here..."
+                maxlength="10000"
+            ></textarea>
+
+            <button id="analyzeBtn" onclick="analyzeSentiment()">
+                Analyze Sentiment
+            </button>
+
+            <div id="result" class="result hidden">
+                <h2 id="sentiment"></h2>
+                <p id="confidence"></p>
+            </div>
+
+            <p id="error" class="error"></p>
+
+        </div>
+
+        <section class="features">
+            <div>
+                <h3>Machine Learning</h3>
+                <p>Logistic Regression classification.</p>
+            </div>
+
+            <div>
+                <h3>Text Processing</h3>
+                <p>TF-IDF feature extraction.</p>
+            </div>
+
+            <div>
+                <h3>Instant Prediction</h3>
+                <p>Analyze reviews in seconds.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        AI Applications Project | Sentiment Analysis Review Model
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
