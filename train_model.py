@@ -22,15 +22,21 @@ X_train, X_test, y_train, y_test = train_test_split(
     stratify=y
 )
 
+
 # Create machine learning pipeline
 model = Pipeline([
     ("tfidf", TfidfVectorizer(
-        max_features=10000,
+        max_features=20000,
         stop_words="english",
-        ngram_range=(1, 2)
+        ngram_range=(1, 3),
+        sublinear_tf=True
     )),
-    ("classifier", LogisticRegression(max_iter=1000))
+    ("classifier", LogisticRegression(
+        max_iter=1000,
+        C=1.0
+    ))
 ])
+
 
 # Train model
 print("Training the model...")
