@@ -1,59 +1,66 @@
-import pandas as pd
-import joblib
+
 import os
+import joblib
+import pandas as pd
 
 from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.pipeline import Pipeline
 from sklearn.metrics import accuracy_score, classification_report
 
-# Load dataset
-data = pd.read_csv("IMDB Dataset.csv")
+print("Loading dataset...")
 
-X = data["review"].astype(str)
-y = data["sentiment"].str.lower()
+df = pd.read_csv("sentiment_dataset.csv")
+df = df[["text", "sentiment"]].dropna()
 
-# Split dataset
+df["text"] = df["text"].astype(str)
+df["sentiment"] = df["sentiment"].str.lower().str.strip()
+
+df = df[df["sentiment"].isin(
+    ["positive", "negative", "neutral"]
+)]
+
+print("Total examples:", len(df))
+print(df["sentiment"].value_counts())
+
+X = df["text"]
+y = df["sentiment"]
+
 X_train, X_test, y_train, y_test = train_test_split(
     X, y,
-    test_size=0.2,
+    test_size=0.20,
     random_state=42,
     stratify=y
 )
 
-
-# Create machine learning pipeline
 model = Pipeline([
     ("tfidf", TfidfVectorizer(
-        max_features=20000,
-        stop_words="english",
-        ngram_range=(1, 3),
+        max_features=10000,
+        ngram_range=(1, 2),
         sublinear_tf=True
     )),
     ("classifier", LogisticRegression(
         max_iter=1000,
-        C=1.0
+        class_weight="balanced"
     ))
 ])
 
-
-# Train model
-print("Training the model...")
+print("\nTraining model...")
 model.fit(X_train, y_train)
 
-# Evaluate model
 predictions = model.predict(X_test)
 
 accuracy = accuracy_score(y_test, predictions)
 
-print("Model training completed!")
-print(f"Accuracy: {accuracy * 100:.2f}%")
+print("\nTraining completed!")
+print("Accuracy:", round(accuracy * 100, 2), "%")
+
+print("\nClassification Report:")
 print(classification_report(y_test, predictions))
 
-# Save model
 os.makedirs("model", exist_ok=True)
 
 joblib.dump(model, "model/sentiment_model.pkl")
 
-print("Model saved successfully!")
+print("\nNew three-class model saved successfully!")

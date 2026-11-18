@@ -1,8 +1,8 @@
+
 async function analyzeSentiment() {
     const review = document.getElementById("review").value.trim();
     const result = document.getElementById("result");
     const sentiment = document.getElementById("sentiment");
-    const confidence = document.getElementById("confidence");
     const error = document.getElementById("error");
     const button = document.getElementById("analyzeBtn");
 
@@ -10,7 +10,7 @@ async function analyzeSentiment() {
     result.classList.add("hidden");
 
     if (!review) {
-        error.textContent = "Please enter a review first.";
+        error.textContent = "Please enter some text first.";
         return;
     }
 
@@ -35,17 +35,21 @@ async function analyzeSentiment() {
         }
 
         sentiment.textContent =
-            "Sentiment: " + data.sentiment;
+            "Predicted Sentiment: " + data.sentiment.toUpperCase();
+
+        document.getElementById("positivePercent").textContent =
+            (data.percentages.positive ?? 0) + "%";
+
+        document.getElementById("negativePercent").textContent =
+            (data.percentages.negative ?? 0) + "%";
+
+        document.getElementById("neutralPercent").textContent =
+            (data.percentages.neutral ?? 0) + "%";
 
         result.classList.toggle(
             "negative",
             data.sentiment.toLowerCase() === "negative"
         );
-
-        confidence.textContent =
-            data.confidence !== null
-                ? "Model confidence: " + data.confidence + "%"
-                : "";
 
         result.classList.remove("hidden");
 
