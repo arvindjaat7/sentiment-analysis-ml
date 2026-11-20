@@ -30,9 +30,9 @@ def predict():
         predicted_sentiment = str(classes[probabilities.argmax()])
 
         return jsonify({
-            "sentiment": predicted_sentiment,
-            "percentages": percentages
-        })
+    "sentiment": predicted_sentiment,
+    "percentage": percentages[predicted_sentiment]
+})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

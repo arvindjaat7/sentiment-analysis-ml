@@ -35,16 +35,8 @@ async function analyzeSentiment() {
         }
 
         sentiment.textContent =
-            "Predicted Sentiment: " + data.sentiment.toUpperCase();
-
-        document.getElementById("positivePercent").textContent =
-            (data.percentages.positive ?? 0) + "%";
-
-        document.getElementById("negativePercent").textContent =
-            (data.percentages.negative ?? 0) + "%";
-
-        document.getElementById("neutralPercent").textContent =
-            (data.percentages.neutral ?? 0) + "%";
+            "Predicted Sentiment: " + data.sentiment.toUpperCase()
+            + " (" + data.percentage + "%)";
 
         result.classList.toggle(
             "negative",
